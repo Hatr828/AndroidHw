@@ -1,8 +1,15 @@
 ﻿<resources>
     <string name="app_name">AndroidHW</string>
-    <string name="title_users">Список користувачів</string>
-    <string name="avatar_content_desc">Аватар користувача</string>
-    <string name="age_format">Вік: %1$d</string>
-    <string name="location_format">%1$s, %2$s</string>
-    <string name="toast_user_selected">Обрано: %1$s, %2$d років</string>
+    <string name="menu_edit_text">Редагувати текст</string>
+    <string name="menu_show_notification">Виклик сповіщення</string>
+    <string name="dialog_title_edit">Редагування тексту</string>
+    <string name="dialog_hint">Введіть текст</string>
+    <string name="dialog_ok">ОК</string>
+    <string name="dialog_cancel">Скасувати</string>
+    <string name="edit_text_hint">Текст відсутній</string>
+    <string name="toast_empty_text">Поле порожнє</string>
+    <string name="toast_permission_denied">Дозвіл на сповіщення не надано</string>
+    <string name="notification_channel_name">Текстові сповіщення</string>
+    <string name="notification_channel_description">Оповіщення з текстом користувача</string>
+    <string name="notification_title">Нове повідомлення</string>
 </resources>
