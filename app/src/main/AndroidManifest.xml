@@ -23,9 +23,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ProductsActivity"
             android:exported="false"
-            android:label="@string/settings_title"
+            android:label="@string/products_title"
+            android:theme="@style/Theme.AndroidHW" />
+        <activity
+            android:name=".EditListActivity"
+            android:exported="false"
+            android:label="@string/title_edit_list"
+            android:theme="@style/Theme.AndroidHW" />
+        <activity
+            android:name=".EditProductActivity"
+            android:exported="false"
+            android:label="@string/title_edit_product"
             android:theme="@style/Theme.AndroidHW" />
     </application>
 
