@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ShoppingList</string>
-    <string name="shopping_lists_title">Shopping Lists</string>
-    <string name="products_title">Products</string>
-    <string name="button_add_list">Add list</string>
-    <string name="button_add_product">Add product</string>
-    <string name="button_open">Open</string>
-    <string name="button_edit">Edit</string>
-    <string name="button_delete">Delete</string>
-    <string name="button_save">Save</string>
+    <string name="app_name">AndroidHW</string>
+    <string name="label_iterations">Iterations</string>
+    <string name="label_delay_ms">Delay (ms)</string>
+    <string name="label_status">Status</string>
+    <string name="label_progress">Progress</string>
+    <string name="label_log">Log</string>
+    <string name="button_start">Start</string>
+    <string name="button_stop">Stop</string>
     <string name="button_cancel">Cancel</string>
-    <string name="label_date">Date</string>
-    <string name="label_total">Total</string>
-    <string name="label_bought">Bought</string>
-    <string name="label_quantity">Quantity</string>
-    <string name="label_unit">Unit</string>
-    <string name="label_bought_status">Bought</string>
-    <string name="label_list_name">List name</string>
-    <string name="label_list_description">Description</string>
-    <string name="label_product_name">Product name</string>
-    <string name="title_edit_list">Edit list</string>
-    <string name="title_edit_product">Edit product</string>
-    <string name="message_no_lists">No lists yet</string>
-    <string name="message_no_products">No products yet</string>
-    <string name="error_name_required">Name is required</string>
-    <string name="error_type_required">Select unit</string>
-    <string name="error_quantity_invalid">Quantity is invalid</string>
+    <string name="button_resume">Resume</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_running">Running</string>
+    <string name="status_finished">Finished</string>
+    <string name="message_task_started">Task started</string>
+    <string name="message_task_paused">Task paused</string>
+    <string name="message_task_resumed">Task resumed</string>
+    <string name="message_task_cancelled">Task cancelled</string>
+    <string name="message_task_finished">Task finished</string>
 </resources>
