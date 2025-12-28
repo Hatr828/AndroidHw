@@ -9,20 +9,24 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?android:attr/colorPrimary"
+        android:background="@android:color/holo_blue_dark"
         android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
-        android:title="@string/app_name" />
+        android:title="@string/title_cars" />
 
-    <EditText
-        android:id="@+id/edit_text"
+    <ListView
+        android:id="@+id/list_cars"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+    <TextView
+        android:id="@+id/text_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:hint="@string/edit_text_hint"
-        android:inputType="none"
-        android:longClickable="false"
-        android:textSize="16sp" />
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/empty_list"
+        android:visibility="gone" />
 </LinearLayout>
