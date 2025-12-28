@@ -1,113 +1,394 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_root"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/calculator_padding"
-    android:background="@color/calculator_background">
+    android:fillViewport="true"
+    android:background="@color/app_background">
 
-    <TextView
-        android:id="@+id/text_display"
+    <LinearLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/display_margin_bottom"
-        android:padding="@dimen/display_padding"
-        android:background="@color/display_background"
-        android:gravity="end"
-        android:text="@string/display_zero"
-        android:textColor="@color/display_text"
-        android:textSize="@dimen/display_text_size" />
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_l">
 
-    <TableLayout
-        android:id="@+id/table_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:shrinkColumns="*"
-        android:stretchColumns="*">
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:text="@string/title_form"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_title" />
 
-        <TableRow>
-            <Button
-                android:id="@+id/button_7"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_7" />
-            <Button
-                android:id="@+id/button_8"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_8" />
-            <Button
-                android:id="@+id/button_9"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_9" />
-            <Button
-                android:id="@+id/button_divide"
-                style="@style/Widget.AndroidHW.CalculatorButton.Operator"
-                android:text="@string/button_divide" />
-        </TableRow>
+        <TextView
+            android:id="@+id/text_section_personal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_s"
+            android:text="@string/section_personal_data"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_section" />
 
-        <TableRow>
-            <Button
-                android:id="@+id/button_4"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_4" />
-            <Button
-                android:id="@+id/button_5"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_5" />
-            <Button
-                android:id="@+id/button_6"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_6" />
-            <Button
-                android:id="@+id/button_multiply"
-                style="@style/Widget.AndroidHW.CalculatorButton.Operator"
-                android:text="@string/button_multiply" />
-        </TableRow>
+        <TextView
+            android:id="@+id/text_label_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_full_name"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_label" />
 
-        <TableRow>
-            <Button
-                android:id="@+id/button_1"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_1" />
-            <Button
-                android:id="@+id/button_2"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_2" />
-            <Button
-                android:id="@+id/button_3"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_3" />
-            <Button
-                android:id="@+id/button_subtract"
-                style="@style/Widget.AndroidHW.CalculatorButton.Operator"
-                android:text="@string/button_subtract" />
-        </TableRow>
+        <EditText
+            android:id="@+id/edit_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:hint="@string/hint_full_name"
+            android:inputType="textPersonName"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="@dimen/text_body" />
 
-        <TableRow>
-            <Button
-                android:id="@+id/button_0"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_0" />
-            <Button
-                android:id="@+id/button_decimal"
-                style="@style/Widget.AndroidHW.CalculatorButton"
-                android:text="@string/button_decimal" />
-            <Button
-                android:id="@+id/button_clear"
-                style="@style/Widget.AndroidHW.CalculatorButton.Clear"
-                android:text="@string/button_clear" />
-            <Button
-                android:id="@+id/button_add"
-                style="@style/Widget.AndroidHW.CalculatorButton.Operator"
-                android:text="@string/button_add" />
-        </TableRow>
+        <TextView
+            android:id="@+id/text_label_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_age"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_label" />
 
-        <TableRow>
-            <Button
-                android:id="@+id/button_equals"
-                style="@style/Widget.AndroidHW.CalculatorButton.Equals"
-                android:layout_span="4"
-                android:text="@string/button_equals" />
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+        <EditText
+            android:id="@+id/edit_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:hint="@string/hint_age"
+            android:inputType="number"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="@dimen/text_body" />
+
+        <TextView
+            android:id="@+id/text_label_salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_salary"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_label" />
+
+        <TextView
+            android:id="@+id/text_salary_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_s"
+            android:text="@string/salary_value_placeholder"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <SeekBar
+            android:id="@+id/seek_salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_s" />
+
+        <TextView
+            android:id="@+id/text_salary_requirement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_l"
+            android:text="@string/salary_requirement"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_label" />
+
+        <TextView
+            android:id="@+id/text_section_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_s"
+            android:text="@string/section_skills"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_section" />
+
+        <CheckBox
+            android:id="@+id/check_experience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_experience"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <CheckBox
+            android:id="@+id/check_teamwork"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_teamwork"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <CheckBox
+            android:id="@+id/check_testing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_testing"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <CheckBox
+            android:id="@+id/check_trips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_l"
+            android:text="@string/skill_trips"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <TextView
+            android:id="@+id/text_section_questions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_s"
+            android:text="@string/section_questions"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_section" />
+
+        <TextView
+            android:id="@+id/text_question_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_1"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <RadioGroup
+            android:id="@+id/group_question_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m">
+
+            <RadioButton
+                android:id="@+id/answer_1_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_1_a"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_1_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_1_b"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_1_c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_1_c"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/text_question_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_2"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <RadioGroup
+            android:id="@+id/group_question_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m">
+
+            <RadioButton
+                android:id="@+id/answer_2_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_2_a"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_2_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_2_b"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_2_c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_2_c"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/text_question_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_3"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <RadioGroup
+            android:id="@+id/group_question_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m">
+
+            <RadioButton
+                android:id="@+id/answer_3_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_3_a"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_3_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_3_b"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_3_c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_3_c"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/text_question_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_4"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <RadioGroup
+            android:id="@+id/group_question_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m">
+
+            <RadioButton
+                android:id="@+id/answer_4_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_4_a"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_4_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_4_b"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_4_c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_4_c"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/text_question_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_5"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body" />
+
+        <RadioGroup
+            android:id="@+id/group_question_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_l">
+
+            <RadioButton
+                android:id="@+id/answer_5_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_5_a"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_5_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_5_b"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+
+            <RadioButton
+                android:id="@+id/answer_5_c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_5_c"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/button_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:enabled="false"
+            android:text="@string/button_submit"
+            android:textSize="@dimen/text_button" />
+
+        <TextView
+            android:id="@+id/text_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:text="@string/result_placeholder"
+            android:textColor="@color/result_failure"
+            android:textSize="@dimen/text_body"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layout_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/text_contacts_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_s"
+                android:text="@string/contacts_title"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_section" />
+
+            <TextView
+                android:id="@+id/text_contacts_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/contacts_value"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_body" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

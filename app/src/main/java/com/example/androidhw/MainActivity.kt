@@ -1,180 +1,204 @@
 ﻿package com.example.androidhw
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.RadioGroup
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import java.text.DecimalFormat
+import androidx.core.content.ContextCompat
 
 class MainActivity : ComponentActivity() {
-    private lateinit var display: TextView
-    private val formatter = DecimalFormat("0.##########")
+    private lateinit var editFullName: EditText
+    private lateinit var editAge: EditText
+    private lateinit var seekSalary: SeekBar
+    private lateinit var textSalaryValue: TextView
+    private lateinit var textSalaryRequirement: TextView
+    private lateinit var buttonSubmit: Button
+    private lateinit var textResult: TextView
+    private lateinit var contactsLayout: LinearLayout
+    private lateinit var groupQuestion1: RadioGroup
+    private lateinit var groupQuestion2: RadioGroup
+    private lateinit var groupQuestion3: RadioGroup
+    private lateinit var groupQuestion4: RadioGroup
+    private lateinit var groupQuestion5: RadioGroup
+    private lateinit var checkExperience: CheckBox
+    private lateinit var checkTeamwork: CheckBox
+    private lateinit var checkTesting: CheckBox
+    private lateinit var checkTrips: CheckBox
 
-    private var currentInput = ""
-    private var accumulator: Double? = null
-    private var pendingOp: Char? = null
-    private var justEvaluated = false
-    private var errorState = false
+    private val minAge = 21
+    private val maxAge = 40
+    private val salaryMin = 500
+    private val salaryMax = 5000
+    private val requirementMinSalary = 1500
+    private val requirementMaxSalary = 3500
+    private val pointsPerQuestion = 2
+    private val passScore = 10
+    private val experiencePoints = 2
+    private val testingPoints = 1
+    private val tripsPoints = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        display = findViewById(R.id.text_display)
-        display.text = getString(R.string.display_zero)
+        editFullName = findViewById(R.id.edit_full_name)
+        editAge = findViewById(R.id.edit_age)
+        seekSalary = findViewById(R.id.seek_salary)
+        textSalaryValue = findViewById(R.id.text_salary_value)
+        textSalaryRequirement = findViewById(R.id.text_salary_requirement)
+        buttonSubmit = findViewById(R.id.button_submit)
+        textResult = findViewById(R.id.text_result)
+        contactsLayout = findViewById(R.id.layout_contacts)
+        groupQuestion1 = findViewById(R.id.group_question_1)
+        groupQuestion2 = findViewById(R.id.group_question_2)
+        groupQuestion3 = findViewById(R.id.group_question_3)
+        groupQuestion4 = findViewById(R.id.group_question_4)
+        groupQuestion5 = findViewById(R.id.group_question_5)
+        checkExperience = findViewById(R.id.check_experience)
+        checkTeamwork = findViewById(R.id.check_teamwork)
+        checkTesting = findViewById(R.id.check_testing)
+        checkTrips = findViewById(R.id.check_trips)
 
-        val digits = mapOf(
-            R.id.button_0 to getString(R.string.button_0),
-            R.id.button_1 to getString(R.string.button_1),
-            R.id.button_2 to getString(R.string.button_2),
-            R.id.button_3 to getString(R.string.button_3),
-            R.id.button_4 to getString(R.string.button_4),
-            R.id.button_5 to getString(R.string.button_5),
-            R.id.button_6 to getString(R.string.button_6),
-            R.id.button_7 to getString(R.string.button_7),
-            R.id.button_8 to getString(R.string.button_8),
-            R.id.button_9 to getString(R.string.button_9)
-        )
+        setupSalary()
+        setupValidation()
 
-        for ((id, digit) in digits) {
-            findViewById<Button>(id).setOnClickListener { appendDigit(digit) }
-        }
-
-        findViewById<Button>(R.id.button_decimal).setOnClickListener {
-            appendDecimal(getString(R.string.button_decimal))
-        }
-        findViewById<Button>(R.id.button_clear).setOnClickListener { clearAll() }
-
-        val operators = mapOf(
-            R.id.button_add to getString(R.string.button_add).first(),
-            R.id.button_subtract to getString(R.string.button_subtract).first(),
-            R.id.button_multiply to getString(R.string.button_multiply).first(),
-            R.id.button_divide to getString(R.string.button_divide).first()
-        )
-
-        for ((id, op) in operators) {
-            findViewById<Button>(id).setOnClickListener { setOperator(op) }
-        }
-
-        findViewById<Button>(R.id.button_equals).setOnClickListener { evaluate() }
+        buttonSubmit.setOnClickListener { evaluateCandidate() }
     }
 
-    private fun appendDigit(digit: String) {
-        if (errorState) {
-            clearAll()
+    private fun setupSalary() {
+        seekSalary.max = salaryMax - salaryMin
+        seekSalary.progress = (requirementMinSalary - salaryMin).coerceIn(0, seekSalary.max)
+        textSalaryRequirement.text = getString(
+            R.string.salary_requirement,
+            requirementMinSalary,
+            requirementMaxSalary
+        )
+        updateSalaryText(salaryMin + seekSalary.progress)
+
+        seekSalary.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                updateSalaryText(salaryMin + progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+        })
+    }
+
+    private fun setupValidation() {
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                updateSubmitEnabled()
+            }
         }
-        if (justEvaluated && pendingOp == null) {
-            currentInput = ""
-            accumulator = null
-            justEvaluated = false
+        editFullName.addTextChangedListener(watcher)
+        editAge.addTextChangedListener(watcher)
+        updateSubmitEnabled()
+    }
+
+    private fun updateSubmitEnabled() {
+        val isNameValid = validateFullName(showError = editFullName.text.isNotBlank())
+        val isAgeValid = validateAge(showError = editAge.text.isNotBlank())
+        buttonSubmit.isEnabled = isNameValid && isAgeValid
+    }
+
+    private fun validateFullName(showError: Boolean): Boolean {
+        val name = editFullName.text.toString().trim()
+        val parts = name.split(Regex("\\s+")).filter { it.isNotBlank() }
+        val valid = parts.size >= 2 && parts.all { part ->
+            part.length >= 2 && part.matches(Regex("[\\p{L}'-]+"))
         }
-        currentInput = if (currentInput == getString(R.string.display_zero)) {
-            digit
+        editFullName.error = if (!showError) null else if (valid) null else {
+            getString(R.string.error_full_name)
+        }
+        return valid
+    }
+
+    private fun validateAge(showError: Boolean): Boolean {
+        val ageText = editAge.text.toString()
+        val age = ageText.toIntOrNull()
+        val valid = age != null && age in minAge..maxAge
+        editAge.error = if (!showError) null else if (valid) null else {
+            getString(R.string.error_age_range, minAge, maxAge)
+        }
+        return valid
+    }
+
+    private fun updateSalaryText(value: Int) {
+        textSalaryValue.text = getString(R.string.salary_value_format, value)
+    }
+
+    private fun evaluateCandidate() {
+        val reasons = mutableListOf<String>()
+        val age = editAge.text.toString().toIntOrNull()
+        if (age == null || age !in minAge..maxAge) {
+            reasons.add(getString(R.string.requirement_age, minAge, maxAge))
+        }
+        val salary = salaryMin + seekSalary.progress
+        if (salary !in requirementMinSalary..requirementMaxSalary) {
+            reasons.add(getString(R.string.requirement_salary, requirementMinSalary, requirementMaxSalary))
+        }
+
+        if (reasons.isNotEmpty()) {
+            showResult(false, getString(R.string.result_failed_requirements, reasons.joinToString("; ")))
+            return
+        }
+
+        val score = calculateScore()
+        if (score >= passScore) {
+            showResult(true, getString(R.string.result_passed_format, score))
         } else {
-            currentInput + digit
-        }
-        updateDisplay(currentInput)
-    }
-
-    private fun appendDecimal(decimal: String) {
-        if (errorState) {
-            clearAll()
-        }
-        if (justEvaluated && pendingOp == null) {
-            currentInput = ""
-            accumulator = null
-            justEvaluated = false
-        }
-        if (currentInput.isEmpty()) {
-            currentInput = getString(R.string.display_zero) + decimal
-        } else if (!currentInput.contains(decimal)) {
-            currentInput += decimal
-        }
-        updateDisplay(currentInput)
-    }
-
-    private fun setOperator(op: Char) {
-        if (errorState) {
-            return
-        }
-        val value = currentInput.toDoubleOrNull()
-        if (value != null) {
-            accumulator = if (accumulator == null || pendingOp == null) {
-                value
-            } else {
-                applyOperation(accumulator!!, value, pendingOp!!)
-            }
-            if (accumulator == null) {
-                showError()
-                return
-            }
-            updateDisplay(formatValue(accumulator!!))
-            currentInput = ""
-        } else if (accumulator == null) {
-            accumulator = 0.0
-        }
-        pendingOp = op
-        justEvaluated = false
-    }
-
-    private fun evaluate() {
-        if (errorState) {
-            return
-        }
-        val value = currentInput.toDoubleOrNull()
-        if (pendingOp != null && value != null && accumulator != null) {
-            val result = applyOperation(accumulator!!, value, pendingOp!!)
-            if (result == null) {
-                showError()
-                return
-            }
-            display.text = formatValue(result)
-            accumulator = result
-            pendingOp = null
-            currentInput = ""
-            justEvaluated = true
-        } else if (value != null) {
-            display.text = formatValue(value)
-            accumulator = value
-            pendingOp = null
-            currentInput = ""
-            justEvaluated = true
+            showResult(false, getString(R.string.result_failed_score_format, score, passScore))
         }
     }
 
-    private fun applyOperation(left: Double, right: Double, op: Char): Double? {
-        return when (op) {
-            '+' -> left + right
-            '-' -> left - right
-            '*' -> left * right
-            '/' -> if (right == 0.0) null else left / right
-            else -> null
+    private fun calculateScore(): Int {
+        var score = 0
+        if (groupQuestion1.checkedRadioButtonId == R.id.answer_1_a) {
+            score += pointsPerQuestion
         }
+        if (groupQuestion2.checkedRadioButtonId == R.id.answer_2_a) {
+            score += pointsPerQuestion
+        }
+        if (groupQuestion3.checkedRadioButtonId == R.id.answer_3_b) {
+            score += pointsPerQuestion
+        }
+        if (groupQuestion4.checkedRadioButtonId == R.id.answer_4_a) {
+            score += pointsPerQuestion
+        }
+        if (groupQuestion5.checkedRadioButtonId == R.id.answer_5_b) {
+            score += pointsPerQuestion
+        }
+        if (checkExperience.isChecked) {
+            score += experiencePoints
+        }
+        if (checkTesting.isChecked) {
+            score += testingPoints
+        }
+        if (checkTrips.isChecked) {
+            score += tripsPoints
+        }
+        return score
     }
 
-    private fun formatValue(value: Double): String {
-        return formatter.format(value)
-    }
-
-    private fun updateDisplay(text: String) {
-        display.text = if (text.isEmpty()) getString(R.string.display_zero) else text
-    }
-
-    private fun clearAll() {
-        currentInput = ""
-        accumulator = null
-        pendingOp = null
-        justEvaluated = false
-        errorState = false
-        display.text = getString(R.string.display_zero)
-    }
-
-    private fun showError() {
-        display.text = getString(R.string.display_error)
-        currentInput = ""
-        accumulator = null
-        pendingOp = null
-        justEvaluated = false
-        errorState = true
+    private fun showResult(passed: Boolean, message: String) {
+        textResult.text = message
+        textResult.visibility = View.VISIBLE
+        val colorId = if (passed) R.color.result_success else R.color.result_failure
+        textResult.setTextColor(ContextCompat.getColor(this, colorId))
+        contactsLayout.visibility = if (passed) View.VISIBLE else View.GONE
     }
 }

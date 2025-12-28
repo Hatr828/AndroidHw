@@ -7,4 +7,13 @@
     <dimen name="button_text_size">20sp</dimen>
     <dimen name="button_height">56dp</dimen>
     <dimen name="button_margin">4dp</dimen>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="spacing_l">24dp</dimen>
+    <dimen name="text_title">22sp</dimen>
+    <dimen name="text_section">18sp</dimen>
+    <dimen name="text_label">14sp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_button">16sp</dimen>
 </resources>
