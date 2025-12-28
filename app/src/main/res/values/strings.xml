@@ -1,22 +1,9 @@
-﻿<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <string name="app_name">AndroidHW</string>
-    <string name="title_cars">Автомобілі</string>
-    <string name="menu_search">Пошук</string>
-    <string name="empty_list">Немає збігів</string>
-    <string name="car_image_desc">Фото авто</string>
-    <string name="year_cost_format">%1$d рік • %2$d USD</string>
-    <string name="title_search">Пошук авто</string>
-    <string name="label_brand">Марка</string>
-    <string name="label_model">Модель</string>
-    <string name="label_year_from">Рік випуску від</string>
-    <string name="label_year_to">Рік випуску до</string>
-    <string name="label_cost_from">Вартість від</string>
-    <string name="label_cost_to">Вартість до</string>
-    <string name="hint_brand">Почніть вводити марку</string>
-    <string name="hint_model">Почніть вводити модель</string>
-    <string name="option_any">Не вибрано</string>
-    <string name="cost_option_format">%1$d USD</string>
-    <string name="matches_format">Збігів: %1$d</string>
-    <string name="matches_default">Збігів: 0</string>
-    <string name="button_matches">Показати збіги</string>
+    <string name="detail_name_label">"Ім'я:"</string>
+    <string name="detail_nameday_label">День іменин:</string>
+    <string name="detail_meaning_label">Значення:</string>
+    <string name="value_unknown">невідомо</string>
+    <string name="button_back">Назад</string>
 </resources>
