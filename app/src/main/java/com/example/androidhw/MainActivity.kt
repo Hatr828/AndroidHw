@@ -1,139 +1,180 @@
 ﻿package com.example.androidhw
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.androidhw.ui.theme.AndroidHWTheme
+import java.text.DecimalFormat
 
 class MainActivity : ComponentActivity() {
-    private var onCreateTime = 0L
-    private var onStartTime = 0L
-    private var onResumeTime = 0L
-    private var onPauseTime = 0L
-    private var onStopTime = 0L
+    private lateinit var display: TextView
+    private val formatter = DecimalFormat("0.##########")
+
+    private var currentInput = ""
+    private var accumulator: Double? = null
+    private var pendingOp: Char? = null
+    private var justEvaluated = false
+    private var errorState = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val now = System.currentTimeMillis()
-        onCreateTime = now
-        Log.d(TAG, "onCreate at $now")
-        enableEdgeToEdge()
-        setContent {
-            AndroidHWTheme {
-                val context = LocalContext.current
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(
-                        onOpenUserGuess = {
-                            Log.d(TAG, "User guess button clicked")
-                            context.startActivity(
-                                Intent(context, UserGuessActivity::class.java)
-                            )
-                        },
-                        onOpenAndroidGuess = {
-                            Log.d(TAG, "Android guess button clicked")
-                            context.startActivity(
-                                Intent(context, AndroidGuessActivity::class.java)
-                            )
-                        },
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        setContentView(R.layout.activity_main)
+
+        display = findViewById(R.id.text_display)
+        display.text = getString(R.string.display_zero)
+
+        val digits = mapOf(
+            R.id.button_0 to getString(R.string.button_0),
+            R.id.button_1 to getString(R.string.button_1),
+            R.id.button_2 to getString(R.string.button_2),
+            R.id.button_3 to getString(R.string.button_3),
+            R.id.button_4 to getString(R.string.button_4),
+            R.id.button_5 to getString(R.string.button_5),
+            R.id.button_6 to getString(R.string.button_6),
+            R.id.button_7 to getString(R.string.button_7),
+            R.id.button_8 to getString(R.string.button_8),
+            R.id.button_9 to getString(R.string.button_9)
+        )
+
+        for ((id, digit) in digits) {
+            findViewById<Button>(id).setOnClickListener { appendDigit(digit) }
+        }
+
+        findViewById<Button>(R.id.button_decimal).setOnClickListener {
+            appendDecimal(getString(R.string.button_decimal))
+        }
+        findViewById<Button>(R.id.button_clear).setOnClickListener { clearAll() }
+
+        val operators = mapOf(
+            R.id.button_add to getString(R.string.button_add).first(),
+            R.id.button_subtract to getString(R.string.button_subtract).first(),
+            R.id.button_multiply to getString(R.string.button_multiply).first(),
+            R.id.button_divide to getString(R.string.button_divide).first()
+        )
+
+        for ((id, op) in operators) {
+            findViewById<Button>(id).setOnClickListener { setOperator(op) }
+        }
+
+        findViewById<Button>(R.id.button_equals).setOnClickListener { evaluate() }
+    }
+
+    private fun appendDigit(digit: String) {
+        if (errorState) {
+            clearAll()
+        }
+        if (justEvaluated && pendingOp == null) {
+            currentInput = ""
+            accumulator = null
+            justEvaluated = false
+        }
+        currentInput = if (currentInput == getString(R.string.display_zero)) {
+            digit
+        } else {
+            currentInput + digit
+        }
+        updateDisplay(currentInput)
+    }
+
+    private fun appendDecimal(decimal: String) {
+        if (errorState) {
+            clearAll()
+        }
+        if (justEvaluated && pendingOp == null) {
+            currentInput = ""
+            accumulator = null
+            justEvaluated = false
+        }
+        if (currentInput.isEmpty()) {
+            currentInput = getString(R.string.display_zero) + decimal
+        } else if (!currentInput.contains(decimal)) {
+            currentInput += decimal
+        }
+        updateDisplay(currentInput)
+    }
+
+    private fun setOperator(op: Char) {
+        if (errorState) {
+            return
+        }
+        val value = currentInput.toDoubleOrNull()
+        if (value != null) {
+            accumulator = if (accumulator == null || pendingOp == null) {
+                value
+            } else {
+                applyOperation(accumulator!!, value, pendingOp!!)
             }
+            if (accumulator == null) {
+                showError()
+                return
+            }
+            updateDisplay(formatValue(accumulator!!))
+            currentInput = ""
+        } else if (accumulator == null) {
+            accumulator = 0.0
+        }
+        pendingOp = op
+        justEvaluated = false
+    }
+
+    private fun evaluate() {
+        if (errorState) {
+            return
+        }
+        val value = currentInput.toDoubleOrNull()
+        if (pendingOp != null && value != null && accumulator != null) {
+            val result = applyOperation(accumulator!!, value, pendingOp!!)
+            if (result == null) {
+                showError()
+                return
+            }
+            display.text = formatValue(result)
+            accumulator = result
+            pendingOp = null
+            currentInput = ""
+            justEvaluated = true
+        } else if (value != null) {
+            display.text = formatValue(value)
+            accumulator = value
+            pendingOp = null
+            currentInput = ""
+            justEvaluated = true
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val now = System.currentTimeMillis()
-        onStartTime = now
-        val delta = if (onCreateTime != 0L) now - onCreateTime else -1L
-        Log.d(TAG, "onStart (delta from onCreate: ${delta}ms)")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val now = System.currentTimeMillis()
-        onResumeTime = now
-        val delta = if (onStartTime != 0L) now - onStartTime else -1L
-        Log.d(TAG, "onResume (delta from onStart: ${delta}ms)")
-    }
-
-    override fun onPause() {
-        val now = System.currentTimeMillis()
-        onPauseTime = now
-        val delta = if (onResumeTime != 0L) now - onResumeTime else -1L
-        Log.d(TAG, "onPause (delta from onResume: ${delta}ms)")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        val now = System.currentTimeMillis()
-        onStopTime = now
-        val delta = if (onPauseTime != 0L) now - onPauseTime else -1L
-        Log.d(TAG, "onStop (delta from onPause: ${delta}ms)")
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        val now = System.currentTimeMillis()
-        val delta = if (onStopTime != 0L) now - onStopTime else -1L
-        Log.d(TAG, "onDestroy (delta from onStop: ${delta}ms)")
-        super.onDestroy()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(TAG, "onRestart")
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
-}
-
-@Composable
-fun HomeScreen(
-    onOpenUserGuess: () -> Unit,
-    onOpenAndroidGuess: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(text = "Guess the Number", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Choose a mode to start the game.")
-        Button(onClick = onOpenUserGuess) {
-            Text(text = "I guess the number")
-        }
-        Button(onClick = onOpenAndroidGuess) {
-            Text(text = "Android guesses the number")
+    private fun applyOperation(left: Double, right: Double, op: Char): Double? {
+        return when (op) {
+            '+' -> left + right
+            '-' -> left - right
+            '*' -> left * right
+            '/' -> if (right == 0.0) null else left / right
+            else -> null
         }
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    AndroidHWTheme {
-        HomeScreen(onOpenUserGuess = {}, onOpenAndroidGuess = {})
+    private fun formatValue(value: Double): String {
+        return formatter.format(value)
+    }
+
+    private fun updateDisplay(text: String) {
+        display.text = if (text.isEmpty()) getString(R.string.display_zero) else text
+    }
+
+    private fun clearAll() {
+        currentInput = ""
+        accumulator = null
+        pendingOp = null
+        justEvaluated = false
+        errorState = false
+        display.text = getString(R.string.display_zero)
+    }
+
+    private fun showError() {
+        display.text = getString(R.string.display_error)
+        currentInput = ""
+        accumulator = null
+        pendingOp = null
+        justEvaluated = false
+        errorState = true
     }
 }

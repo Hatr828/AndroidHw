@@ -12,14 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidHW">
         <activity
-            android:name=".AndroidGuessActivity"
-            android:exported="false"
-            android:label="Android Guess" />
-        <activity
-            android:name=".UserGuessActivity"
-            android:exported="false"
-            android:label="User Guess" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
